@@ -13,7 +13,7 @@ Right now I want to consider R8 inlining issue.
 
 We have application, that have 2 static methods:
 
-```java
+```
 com.dimorinny.proguard.ClassForStaticMethod.willBeInlined
 com.dimorinny.proguard.MainActivity.willBeInlined
 ```
@@ -39,9 +39,15 @@ git clone https://github.com/dimorinny/r8-methods-inlining-instrumentation-tests
 
 3. Open target APK (`app/build/outputs/apk/release/app-release-unsigned.apk`), and you will able
 to see, that `ClassForStaticMethod` was inlined, and all their code can be found exactly in call place.
+<div align="center">
+    <img height="350px" src="https://raw.githubusercontent.com/dimorinny/r8-methods-inlining-instrumentation-tests/master/images/target-apk.jpg">
+</div>
 
 4. Open test APK (`app/build/outputs/apk/androidTest/release/app-release-androidTest.apk`), and you 
 will able to see method references to already inlined class `ClassForStaticMethod`.
+<div align="center">
+    <img height="350px" src="https://raw.githubusercontent.com/dimorinny/r8-methods-inlining-instrumentation-tests/master/images/test-apk.jpg">
+</div>
 
 5. Sign APKs by`jarsigner`
 
