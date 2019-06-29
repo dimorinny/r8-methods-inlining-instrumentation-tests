@@ -21,9 +21,9 @@ com.dimorinny.proguard.MainActivity.willBeInlined
 That methods are used not only in main APK, but also in test APK. As I understand right, that
 allowed by classpath merging between tested and test APKs during running instrumentation tests.
 
-R8 compiler has method inlining feature, that removes methods from final APK, but test APK still
-have method references, that must be resolved from APK during runtime. But it is impossible,
-because, that methods have been already inlined by R8.  
+R8 compiler has method (and class) inlining feature, that removes classes and methods from final 
+APK, but test APK still have method references, that must be resolved from APK during runtime.
+But it is impossible, because, that methods have been already inlined by R8.  
 
 ### How to reproduce?
 
@@ -32,10 +32,12 @@ because, that methods have been already inlined by R8.
 git clone https://github.com/dimorinny/r8-methods-inlining-instrumentation-tests.git
 ```
 
+
 2. Build test and target APKs
 ```
 ./gradlew app:assembleAndroidTest
 ```
+
 
 3. Open target APK (`app/build/outputs/apk/release/app-release-unsigned.apk`), and you will able
 to see, that `ClassForStaticMethod` was inlined, and all their code can be found exactly in call place.
@@ -43,11 +45,13 @@ to see, that `ClassForStaticMethod` was inlined, and all their code can be found
     <img height="350px" src="https://raw.githubusercontent.com/dimorinny/r8-methods-inlining-instrumentation-tests/master/images/target-apk.jpg">
 </div>
 
+
 4. Open test APK (`app/build/outputs/apk/androidTest/release/app-release-androidTest.apk`), and you 
 will able to see method references to already inlined class `ClassForStaticMethod`.
 <div align="center">
     <img height="350px" src="https://raw.githubusercontent.com/dimorinny/r8-methods-inlining-instrumentation-tests/master/images/test-apk.jpg">
 </div>
+
 
 5. Sign APKs by`jarsigner`
 
