@@ -1,4 +1,4 @@
-### Run instrumentation tests with minified applications
+## Run instrumentation tests with minified applications
 
 We're going to run instrumentation tests along with production (minified) application.
 We want to cover all cases (including incorrect proguard (r8) configurations) and test exactly
