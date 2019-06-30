@@ -19,7 +19,7 @@ com.dimorinny.proguard.MainActivity.willBeInlined
 ```
 
 That methods are used not only in main APK, but also in test APK. As I understand right, that
-allowed by classpath merging between tested and test APKs during running instrumentation tests.
+allowed by classpath merging between target and test APKs during running instrumentation tests.
 
 R8 compiler has method (and class) inlining feature, that removes classes and methods from final 
 APK, but test APK still have method references, that must be resolved from APK during runtime.
@@ -55,7 +55,22 @@ will able to see method references to already inlined class `ClassForStaticMetho
 
 5. Sign APKs by`jarsigner`
 
+6. Run instrumentation tests using command:
+```
+adb shell am instrument -w -r -e debug false -e class 'com.dimorinny.proguard.ExampleInstrumentedTest#useAppContext' com.dimorinny.proguard.test/android.support.test.runner.AndroidJUnitRunner
+```
+
+As a result you will have a exception:
+
+```
+java.lang.NoSuchMethodError: No static method willBeInlined(Ljava/lang/String;)Landroid/content/Intent; in class Lcom/dimorinny/proguard/MainActivity; or its super classes (declaration of 'com.dimorinny.proguard.MainActivity' appears in /data/app/com.dimorinny.proguard-1/base.apk)
+	at com.dimorinny.proguard.ExampleInstrumentedTest.useAppContext(ExampleInstrumentedTest.java:20)
+	at java.lang.reflect.Method.invoke(Native Method)
+	...
+	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1853)
+```
+
 ### Definition of done
 
-Test APK compilation process must be know more about minification process in tested APK compilation.
-Exactly in this example, that method must be inlined not only in tested APK, but also in test APK.
+Test APK compilation process must be know more about minification process in target APK compilation.
+Exactly in this case, that method must be inlined not only in target APK, but also in test APK.
